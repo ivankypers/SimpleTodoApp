@@ -65,38 +65,43 @@ function createTodoItem(name) {
 }
 
 
-document.addEventListener('DOMContentLoaded', () => {
-    let container = document.getElementById('todo-app')
 
-    let todoAppTitle = createAppTitle('Список дел')
-    let todoItemForm = createTodoItemForm()
-    let todoList = createTodoList()
 
-    container.append(todoAppTitle);
-    container.append(todoItemForm.form);
-    container.append(todoList);
+function createTodoApp(container, title= 'Список дел') {
 
-    todoItemForm.form.addEventListener('submit', function (e) {
-        e.preventDefault()
+        let todoAppTitle = createAppTitle(title)
+        let todoItemForm = createTodoItemForm()
+        let todoList = createTodoList()
 
-        if (!todoItemForm.input.value) {
-            return;
-        }
+        container.append(todoAppTitle);
+        container.append(todoItemForm.form);
+        container.append(todoList);
 
-        let todoItem = createTodoItem(todoItemForm.input.value);
+        todoItemForm.form.addEventListener('submit', function (e) {
+            e.preventDefault()
 
-        todoItem.doneButton.addEventListener('click', function () {
-            todoItem.item.classList.toggle('list-group-item-success')
-        });
-        todoItem.deleteButton.addEventListener('click', function () {
-            if (confirm('Вы уверены?')) {
-                todoItem.item.remove()
+            if (!todoItemForm.input.value) {
+                return;
             }
+
+            let todoItem = createTodoItem(todoItemForm.input.value);
+
+            todoItem.doneButton.addEventListener('click', function () {
+                todoItem.item.classList.toggle('list-group-item-success')
+            });
+            todoItem.deleteButton.addEventListener('click', function () {
+                if (confirm('Вы уверены?')) {
+                    todoItem.item.remove()
+                }
+
+            })
+
+            todoList.append(todoItem.item);
+            todoItemForm.input.value = '';
 
         })
 
-        todoList.append(todoItem.item);
-        todoItemForm.input.value = '';
+}
 
-    })
-})
+
+window.createTodoApp = createTodoApp;
