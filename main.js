@@ -131,7 +131,7 @@ function createTodoApp(container, title= 'Список дел') {
 
             todoList.append(todoItem.item);
             todoItemForm.input.value = '';
-
+            todoItemForm.button.disabled = todoItemForm.input.value === '';
         })
 
 }
