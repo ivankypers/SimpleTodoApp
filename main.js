@@ -116,6 +116,9 @@ function createTodoApp(container, title= 'Список дел') {
                     if (todos[obj].id === Number(todoItem.item.id)) {
                         todos[obj].done = todoItem.item.classList.contains('list-group-item-success');
                     }
+                    if (todos[obj].done) {
+                        todoItem.doneButton.classList.add('list-group-item-success')
+                    }
                 }
             });
             todoItem.deleteButton.addEventListener('click', function () {
@@ -140,7 +143,6 @@ function createTodoApp(container, title= 'Список дел') {
 function savedTodos() {
     let todosJSON = JSON.stringify(todos);
     localStorage.setItem('todos', todosJSON);
-    console.log()
 }
 
 function cleanSavedTodos() {
@@ -149,6 +151,7 @@ function cleanSavedTodos() {
     return todosJSON
 }
 
+
 function loadSavedContent() {
     let studyForm = document.querySelector('form')
     let studyList = document.querySelector('.list-group')
@@ -156,8 +159,37 @@ function loadSavedContent() {
     let todos = JSON.parse(todosJSON);
 
     for (let todo in todos) {
-        console.log(todos[todo].name)
         let savedItem = createTodoItem(todos[todo].name)
+        savedItem.doneButton.addEventListener('click', function () {
+            savedItem.item.classList.toggle('list-group-item-success')
+
+            for (let obj in todos) {
+
+                if (todos[obj].id === Number(savedItem.item.id)) {
+                    todos[obj].done = savedItem.item.classList.contains('list-group-item-success');
+                }
+                if (todos[obj].done) {
+                    savedItem.doneButton.classList.add('list-group-item-success')
+                }
+
+
+            }
+
+        });
+        savedItem.deleteButton.addEventListener('click', function () {
+            if (confirm('Вы уверены?')) {
+                savedItem.item.remove()
+
+                for (let i = 0; i < todos.length; i++) {
+                    if (todos[i].id === Number(savedItem.item.id)) {
+                        todos.splice(i, 1);
+                        break;
+                    }
+                }
+
+
+            }
+        })
         studyList.append(savedItem.item);
     }
 
@@ -168,9 +200,5 @@ function loadSavedContent() {
 
 }
 
-
 window.createTodoApp = createTodoApp;
-window.addEventListener('load', (event) => {
 
-    // populate page
-});

@@ -10,6 +10,11 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       createTodoApp(document.getElementById('study-todo-app'), 'Учёба')
+      if(localStorage.getItem('todos')) {
+        loadSavedContent()
+      }
+
+
     });
   </script>
   <title>Document</title>
