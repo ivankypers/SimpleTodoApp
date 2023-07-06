@@ -35,7 +35,6 @@ function createTodoItemForm() {
 }
 
 function createTodoList() {
-
     let list = document.createElement('ul')  //Создаем лист, куда будут добавляться элементы li TodoItem
     list.classList.add('list-group')
     return list
@@ -77,12 +76,15 @@ function createTodoItem(name) {
     buttonGroup.append(deleteButton);
     item.append(buttonGroup)
 
+    savedTodos();
+
     return {
         todo,
         item,
         doneButton,
         deleteButton
     }
+
 
 }
 
@@ -105,7 +107,6 @@ function createTodoApp(container, title= 'Список дел') {
             if (!todoItemForm.input.value) {
                 return;
             }
-
 
             let todoItem = createTodoItem(todoItemForm.input.value);
 
@@ -136,6 +137,40 @@ function createTodoApp(container, title= 'Список дел') {
 
 }
 
+function savedTodos() {
+    let todosJSON = JSON.stringify(todos);
+    localStorage.setItem('todos', todosJSON);
+    console.log()
+}
+
+function cleanSavedTodos() {
+    let todosJSON = null;
+    localStorage.setItem('todos', todosJSON);
+    return todosJSON
+}
+
+function loadSavedContent() {
+    let studyForm = document.querySelector('form')
+    let studyList = document.querySelector('.list-group')
+    let todosJSON = localStorage.getItem('todos');
+    let todos = JSON.parse(todosJSON);
+
+    for (let todo in todos) {
+        console.log(todos[todo].name)
+        let savedItem = createTodoItem(todos[todo].name)
+        studyList.append(savedItem.item);
+    }
+
+
+
+    studyForm.input.value = '';
+    studyForm.button.disabled = studyForm.input.value === '';
+
+}
+
 
 window.createTodoApp = createTodoApp;
+window.addEventListener('load', (event) => {
 
+    // populate page
+});
